@@ -11,10 +11,25 @@ This repository contains official examples and demos built by the Polygon.io tea
 
 ## Getting Started
 
-Most examples require a Polygon.io API key. Set it using an environment variable:
+Most examples require a Polygon.io API key. If you need an API key, [sign up here](https://polygon.io) to get started. Set it using an environment variable:
 
 ```bash
 export POLYGON_API_KEY=your-api-key-here
 ```
 
-More to come soon!
+Then follow the README in each example folder for setup instructions.
+
+## Directory Structure
+
+```
+examples/
+  ├── rest/
+  ├── websocket/
+  ├── client-js/
+  ├── client-python/
+  └── integrations/
+```
+
+## Questions?
+
+For product support or technical help, contact us at [polygon.io/contact](https://polygon.io/contact).
