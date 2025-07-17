@@ -15,5 +15,6 @@ Most examples require a Polygon.io API key. Set it using an environment variable
 
 ```bash
 export POLYGON_API_KEY=your-api-key-here
+```
 
-...
+More to come soon!
