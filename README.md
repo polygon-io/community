@@ -25,8 +25,6 @@ Then follow the README in each example folder for setup instructions.
 examples/
   ├── rest/
   ├── websocket/
-  ├── client-js/
-  ├── client-python/
   └── integrations/
 ```
 
