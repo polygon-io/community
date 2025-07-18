@@ -1,5 +1,5 @@
 [project]
-name = "Market Parser Polygon MCP Demo"
+name = "market-parser-polygon-mcp"
 version = "1.0.0"
 description = "This shows off the Polygon.io MCP server in action within an agentic workflow using Pydantic AI."
 authors = [{ name = "Alex Novotny", email = "alex.novotny@polygon.io" }]
