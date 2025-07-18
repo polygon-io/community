@@ -1,0 +1,20 @@
+[project]
+name = "Market Parser Polygon MCP Demo"
+version = "1.0.0"
+description = "This shows off the Polygon.io MCP server in action within an agentic workflow using Pydantic AI."
+authors = [{ name = "Alex Novotny", email = "alex.novotny@polygon.io" }]
+requires-python = ">=3.10"
+dependencies = [
+    "pydantic-ai",
+    "python-dotenv",
+    "rich"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta" 
