@@ -1,4 +1,4 @@
-# Market Parser Demo
+# Market Parser with Polygon MCP Server
 
 A Python CLI for natural language financial queries using the Polygon.io MCP server and Anthropic Claude (via PydanticAI).
 
@@ -8,9 +8,6 @@ A Python CLI for natural language financial queries using the Polygon.io MCP ser
   `Tesla price now`  
   `AAPL volume last week`  
   `Show me the price of MSFT on 2023-01-01`
-
-- **No boilerplate:**  
-  All logic is in `market_parser_demo.py`—no package structure, no extra files.
 
 - **Rich CLI output:**  
   Answers are formatted for easy reading in your terminal.
@@ -94,7 +91,3 @@ Goodbye!
 - Prints the answer in a readable format
 
 ---
-
-## License
-
-MIT (or your preferred license) 
