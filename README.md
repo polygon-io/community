@@ -1,7 +1,7 @@
 # Polygon.io Examples & Demos
 
 <div align="center">
-  <img src="../../../images/logo.png" alt="Project Logo" width="100%"/>
+  <img src="/images/logo.png" alt="Project Logo" width="100%"/>
 </div>
 
 This repository contains official examples and demos built by the Polygon.io team. These examples showcase how to use our REST and WebSocket APIs to access market data across stocks, options, crypto, forex, and more.
