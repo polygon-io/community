@@ -19,7 +19,7 @@ def create_polygon_mcp_server():
         command="uvx",
         args=[
             "--from",
-            "git+https://github.com/polygon-io/mcp_polygon@v0.1.0",
+            "git+https://github.com/polygon-io/mcp_polygon@v0.4.0",
             "mcp_polygon"
         ],
         env=env
