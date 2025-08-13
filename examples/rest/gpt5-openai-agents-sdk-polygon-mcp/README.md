@@ -12,6 +12,7 @@ A simple Python CLI for natural language financial queries using GPT‑5 via the
   `last trade for AAPL`  
   `aggregates for MSFT from 2024-01-01 to 2024-03-01 daily`  
   `ticker details TSLA`
+  `analyze the return on investment between microsoft and meta. review news, ratings, earning. save a report.`
 
 - **Rich CLI output:**  
   Answers are formatted for easy reading in your terminal.
@@ -33,7 +34,7 @@ A simple Python CLI for natural language financial queries using GPT‑5 via the
     ```
 
 2. **Get your API keys:**
-   - OpenAI API key (GPT‑5)
+   - [OpenAI API key](https://platform.openai.com/api-keys)
    - [Polygon.io API key](https://polygon.io/)
 
 3. **Create a `.env` file in the same directory as `main.py`:**
