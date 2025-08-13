@@ -1,10 +1,10 @@
-# GPT-5 + OpenAI Agents SDK + Polygon.io MCP Server — Agentic CLI Demo
+# GPT-5 + OpenAI Agents SDK + Polygon.io MCP Server — Agentic Financial Analyst Demo
 
 <div align="center">
   <img src="../../../images/logo.png" alt="Project Logo" width="100%"/>
 </div>
 
-A simple Python CLI for natural language financial queries using GPT‑5 via the OpenAI Agents SDK and the [Polygon.io](https://polygon.io/) [MCP server](https://github.com/polygon-io/mcp_polygon). It supports saving analyses as Markdown reports.
+A simple Python CLI for natural language financial queries using [GPT‑5](https://openai.com/gpt-5/) via the [OpenAI](https://openai.com/) [Agents SDK](https://openai.github.io/openai-agents-python/) and the [Polygon.io](https://polygon.io/) [MCP server](https://github.com/polygon-io/mcp_polygon). It also supports saving analyses as Markdown reports.
 
 ## Features
 
