@@ -78,6 +78,12 @@ For reference, the analysis agent follows instruction steps like:
 
 Be specific in your prompt. The better the prompt — the better the response.
 
+Putting in `Do a return on investment analysis of Meta vs Microsoft. Review news, sentiment, rating, earnings. Analyze the results. Save a report. ` will result in a report similar to what exists in example.md in the reports folder of this repo.
+
+<div align="center">
+  <img src="../gpt5-openai-agents-sdk-polygon-mcp/images/example.png" alt="Example" width="100%"/>
+</div>
+
 ---
 
 ## Troubleshooting
@@ -117,6 +123,16 @@ Be specific in your prompt. The better the prompt — the better the response.
 
 ---
 
+## Enhancements
+
+This demo is a simple one file demonstration to showcase the art of the possible. There are several enhancements that could be made. 
+
+- Multi-agent handoffs: Delegate to specialized agents (news, fundamentals, technicals) for better results.
+- Stronger guardrails
+- Report output models using Pydantic
+- Config and limits: YAML/ENV config for model, date-range caps, per-tool rate limits, and retries.
+
+---
 ## License
 
 This project is licensed under the [MIT License](../../../LICENSE).

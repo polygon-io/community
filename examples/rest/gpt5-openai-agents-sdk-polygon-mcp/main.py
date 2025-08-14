@@ -74,10 +74,13 @@ def create_polygon_mcp_server():
     })
 
 # Output functions
-def print_response(output):
+def print_response(result):
     console.print("\n[bold green]✔ Query processed successfully![/bold green]")
     console.print("[bold]Agent Response:[/bold]")
-    console.print(Markdown(str(output)) if any(tag in str(output) for tag in ["#", "*", "`", "-", ">"]) else str(output).strip())
+    # Print only the final output from the run result (per OpenAI Agents SDK)
+    final_output = getattr(result, "final_output", result)
+    final_text = str(final_output)
+    console.print(Markdown(final_text) if any(tag in final_text for tag in ["#", "*", "`", "-", ">"]) else final_text.strip())
     console.print("---------------------\n")
 
 def print_error(error, error_type="Error"):
