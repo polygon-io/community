@@ -128,6 +128,7 @@ Putting in `Do a return on investment analysis of Meta vs Microsoft. Review news
 This demo is a simple one file demonstration to showcase the art of the possible. There are several enhancements that could be made. 
 
 - Multi-agent handoffs: Delegate to specialized agents (news, fundamentals, technicals) for better results.
+- LLM context clearing between topic changes
 - Stronger guardrails
 - Report output models using Pydantic
 - Config and limits: YAML/ENV config for model, date-range caps, per-tool rate limits, and retries.
