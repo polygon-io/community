@@ -1,3 +1,11 @@
+"""CLI financial analyst using OpenAI Agents SDK and Polygon.io MCP server.
+
+This script launches a stdio MCP server for Polygon.io tools, runs a single
+analysis agent with an input guardrail to ensure finance-related prompts, and
+renders only the agent's final output. Users can optionally save analyses as
+Markdown reports in the `reports/` directory.
+"""
+
 import os
 from agents import Agent, InputGuardrail, GuardrailFunctionOutput, Runner, SQLiteSession, AsyncOpenAI, trace, function_tool, ModelSettings
 from agents.exceptions import InputGuardrailTripwireTriggered
@@ -18,13 +26,21 @@ console = Console()
 
 # Models
 class FinanceOutput(BaseModel):
+    """Structured result from the guardrail check.
+
+    Indicates whether the user prompt is about finance and includes brief
+    reasoning for user-friendly feedback when blocked.
+    """
     is_about_finance: bool
     reasoning: str
 
-
 @function_tool
 async def save_analysis_report(content: str, title: str = None, category: str = "general") -> str:
-    """Save analysis reports for later reference."""
+    """Persist a Markdown report to `reports/<category>/<timestamp>_<title>.md`.
+
+    The title is sanitized for filesystem safety. A generated header includes
+    timestamp and category for quick provenance when browsing saved reports.
+    """
     reports_dir = Path("reports") / category
     reports_dir.mkdir(parents=True, exist_ok=True)
     
@@ -56,6 +72,11 @@ guardrail_agent = Agent(
 )
 
 async def finance_guardrail(context, agent, input_data):
+    """Validate that the prompt is finance-related before running the agent.
+
+    Returns a tripwire signal the framework uses to short-circuit execution
+    and provide a friendly, targeted message when the topic is out of scope.
+    """
     result = await Runner.run(guardrail_agent, input_data, context=context)
     final_output = result.final_output_as(FinanceOutput)
     return GuardrailFunctionOutput(
@@ -64,6 +85,11 @@ async def finance_guardrail(context, agent, input_data):
     )
 
 def create_polygon_mcp_server():
+    """Create a stdio MCP server instance configured with POLYGON_API_KEY.
+
+    The server exposes Polygon.io data tools to the agent without separate
+    process management by using `uvx` to resolve and run the MCP package.
+    """
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
         raise Exception("POLYGON_API_KEY not set in environment.")
@@ -75,6 +101,7 @@ def create_polygon_mcp_server():
 
 # Output functions
 def print_response(result):
+    """Render only the agent's final output with basic Markdown support."""
     console.print("\n[bold green]✔ Query processed successfully![/bold green]")
     console.print("[bold]Agent Response:[/bold]")
     # Print only the final output from the run result (per OpenAI Agents SDK)
@@ -84,11 +111,13 @@ def print_response(result):
     console.print("---------------------\n")
 
 def print_error(error, error_type="Error"):
+    """Display errors in a consistent, readable format for the CLI."""
     console.print(f"\n[bold red]!!! {error_type} !!![/bold red]")
     console.print(str(error).strip())
     console.print("------------------\n")
 
 def print_guardrail_error(exception):
+    """Explain why a prompt was blocked by the finance guardrail."""
     console.print("\n[bold yellow]⚠ Guardrail Triggered[/bold yellow]")
     console.print("[yellow]This query is not related to finance.[/yellow]")
     if hasattr(exception, 'output_info') and exception.output_info:
@@ -98,6 +127,11 @@ def print_guardrail_error(exception):
 
 # Main CLI
 async def cli_async():
+    """Run the interactive CLI loop.
+
+    Sets up a lightweight session for conversational continuity, starts the
+    Polygon MCP server, and executes one analysis agent per user turn.
+    """
     print("Welcome to the Market Parser CLI. Type 'exit' to quit.")
     
     try:
