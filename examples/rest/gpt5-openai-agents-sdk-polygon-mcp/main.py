@@ -132,7 +132,7 @@ async def cli_async():
     Sets up a lightweight session for conversational continuity, starts the
     Polygon MCP server, and executes one analysis agent per user turn.
     """
-    print("Welcome to the Market Parser CLI. Type 'exit' to quit.")
+    print("Welcome to the GPT-5 powered Market Analysis Agent. Type 'exit' to quit.")
     
     try:
         session = SQLiteSession("finance_conversation")
@@ -150,10 +150,10 @@ async def cli_async():
                         print("Please enter a valid query (at least 2 characters).")
                         continue
                     
-                    with trace("Polygon.io Finance Agent"):
+                    with trace("Polygon.io Demo"):
                         try:
                             analysis_agent = Agent(
-                                name="Generic Financial Analysis Agent",
+                                name="Financial Analysis Agent",
                                 instructions=(
                                     "Financial analysis agent. Steps:\n"
                                     "1. Verify finance-related using guardrail\n"
