@@ -1,4 +1,4 @@
-"""CLI financial analyst using OpenAI Agents SDK and Polygon.io MCP server.
+"""CLI financial analyst using OpenAI Agents SDK, GPT-5, and Polygon.io MCP server.
 
 This script launches a stdio MCP server for Polygon.io tools, runs a single
 analysis agent with an input guardrail to ensure finance-related prompts, and
@@ -27,21 +27,15 @@ console = Console()
 # Models
 class FinanceOutput(BaseModel):
     """Structured result from the guardrail check.
-
-    Indicates whether the user prompt is about finance and includes brief
-    reasoning for user-friendly feedback when blocked.
     """
     is_about_finance: bool
     reasoning: str
 
 @function_tool
 async def save_analysis_report(content: str, title: str = None, category: str = "general") -> str:
-    """Persist a Markdown report to `reports/<category>/<timestamp>_<title>.md`.
-
-    The title is sanitized for filesystem safety. A generated header includes
-    timestamp and category for quick provenance when browsing saved reports.
+    """Persist a Markdown report to `reports/<timestamp>_<title>.md`.
     """
-    reports_dir = Path("reports") / category
+    reports_dir = Path("reports")
     reports_dir.mkdir(parents=True, exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -67,15 +61,17 @@ async def save_analysis_report(content: str, title: str = None, category: str = 
 
 guardrail_agent = Agent(
     name="Guardrail check",
-    instructions="Confirm the user's question is about finance.",
+    instructions=
+    """Classify if the user query is finance-related.
+    Include: stocks, ETFs, crypto, forex, market news, fundamentals, economic indicators, ROI calcs, corporate actions.
+    Exclude: non-financial topics (cooking, general trivia, unrelated tech).
+    Disambiguate: if term (e.g., Apple, Tesla) could be both, check for finance context words (price, market, earnings, shares). If unclear, return non-finance.
+    Output: is_about_finance: bool, reasoning: brief why/why not.""",
     output_type=FinanceOutput,
 )
 
 async def finance_guardrail(context, agent, input_data):
     """Validate that the prompt is finance-related before running the agent.
-
-    Returns a tripwire signal the framework uses to short-circuit execution
-    and provide a friendly, targeted message when the topic is out of scope.
     """
     result = await Runner.run(guardrail_agent, input_data, context=context)
     final_output = result.final_output_as(FinanceOutput)
@@ -86,9 +82,6 @@ async def finance_guardrail(context, agent, input_data):
 
 def create_polygon_mcp_server():
     """Create a stdio MCP server instance configured with POLYGON_API_KEY.
-
-    The server exposes Polygon.io data tools to the agent without separate
-    process management by using `uvx` to resolve and run the MCP package.
     """
     api_key = os.getenv("POLYGON_API_KEY")
     if not api_key:
@@ -128,9 +121,6 @@ def print_guardrail_error(exception):
 # Main CLI
 async def cli_async():
     """Run the interactive CLI loop.
-
-    Sets up a lightweight session for conversational continuity, starts the
-    Polygon MCP server, and executes one analysis agent per user turn.
     """
     print("Welcome to the GPT-5 powered Market Analysis Agent. Type 'exit' to quit.")
     
@@ -157,14 +147,15 @@ async def cli_async():
                                 instructions=(
                                     "Financial analysis agent. Steps:\n"
                                     "1. Verify finance-related using guardrail\n"
-                                    "2. Gather market data with Polygon.io tools\n"
+                                    "2. Call Polygon tools precisely; pull the minimal required data.\n"
                                     "3. Include disclaimers.\n"
                                     "4. Offer to save reports if not asked by the user to save a report.\n\n"
                                     "RULES:\n"
-                                    "Always double check math.\n" 
-                                    "When using any news tools, pull NO MORE THAN 3 articles per ticker based on the users input date range.\n"
+                                    "Double-check math; limit news to ≤3 articles/ticker in date range.\n" 
                                     "If the user asks to save a report, save it to the reports folder using the save_analysis_report tool.\n"
-                                    "When using any polygon.io data tools, be mindful of how much data you pull based on the users input to minimize context being exceeded.\n"
+                                    "When using any polygon.io data tools, be mindful of how much data you pull based \n"
+                                    "on the users input to minimize context being exceeded.\n"
+                                    "If data unavailable or tool fails, explain gracefully — never fabricate.\n"
                                     "TOOLS:\n" 
                                     "Polygon.io data, save_analysis_report\n"
                                     "Disclaimer: Not financial advice. For informational purposes only."
