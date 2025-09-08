@@ -1,0 +1,19 @@
+[project]
+name = "options-0dte-covered-call"
+version = "0.1.0"
+description = "A small  Python utility that pulls only the option contracts you’d consider for a covered call expiring today (0-DTE) on SPY"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Alex Novotny" }
+]
+license = { file = "LICENSE" }
+dependencies = [
+  "python-dotenv",
+  "polygon-api-client",
+  "pandas"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta" 

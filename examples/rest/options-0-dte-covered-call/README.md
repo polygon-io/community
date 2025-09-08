@@ -1,0 +1,180 @@
+# 0-DTE Covered Call Screener
+
+<div align="center">
+  <img src="../../../images/logo.png" alt="Project Logo" width="100%"/>
+</div>
+
+A Python utility that screens and analyzes 0-DTE (zero days to expiration) covered call options on SPY using real-time market data from Polygon.io. This tool helps identify optimal covered call opportunities based on customizable criteria including delta, premium yield, and probability of profit.
+
+## Features
+
+- **Real-time Options Data**: Fetches live options chain data from Polygon.io
+- **0-DTE Focus**: Specifically designed for same-day expiration covered calls
+- **Advanced Filtering**: Filter by delta range, out-of-the-money percentage, bid/ask spreads, and open interest
+- **Multiple Ranking Metrics**: Sort results by premium yield, max profit, or probability of profit
+- **P&L Tracking**: Mark-to-market functionality to track realized P&L after expiration
+- **CSV Export**: Export filtered results for further analysis
+
+## What's Inside
+
+This tool provides a comprehensive screening system for 0-DTE covered call strategies:
+
+- **Options Chain Fetching**: Retrieves call options expiring today for specified symbols
+- **Spot Price Resolution**: Automatically determines underlying asset price
+- **Black-Scholes Calculations**: Estimates probability of profit using implied volatility
+- **Risk Metrics**: Calculates breakeven points, maximum profit, and premium yields
+- **Performance Tracking**: Post-expiration P&L calculation and assignment tracking
+
+## Requirements
+
+- Python 3.10+
+- `uv` package manager
+  - Install: `pipx install uv` or `pip install uv`
+- Polygon.io API key (free tier available)
+
+## Setup
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd 0dte_closed
+   ```
+
+2. **Install dependencies using uv**:
+   ```bash
+   uv sync
+   ```
+
+3. **Set up environment variables**:
+   ```bash
+   cp env.example .env
+   # Edit .env and add your Polygon API key
+   ```
+
+4. **Get a Polygon.io API key**:
+   - Visit [polygon.io](https://polygon.io/)
+   - Sign up for a free account
+   - Copy your API key to the `.env` file
+
+## Usage
+
+### Basic Screening
+
+Run the screener with default parameters:
+```bash
+uv run screener.py screen
+```
+
+### Advanced Screening
+
+Customize screening parameters:
+```bash
+uv run screener.py screen \
+  --symbol SPY \
+  --expiration-days 0 \
+  --min-otm-pct 0.00 \
+  --max-otm-pct 0.03 \
+  --delta-lo 0.15 \
+  --delta-hi 0.35 \
+  --min-bid 0.05 \
+  --min-open-interest 1 \
+  --max-spread-to-mid 0.75 \
+  --rank-metric premium_yield \
+  --outdir ./data
+```
+
+### Mark P&L After Expiration
+
+Calculate realized P&L for a previous screening:
+```bash
+uv run screener.py mark \
+  --csv ./data/spy_2025-09-08_0dte_calls.csv \
+  --underlying-close 650.25
+```
+
+## Command Line Options
+
+### Screen Command
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--symbol` | SPY | Underlying symbol to screen |
+| `--expiration-days` | 0 | Days ahead for expiration (0 = today) |
+| `--min-otm-pct` | 0.00 | Minimum out-of-the-money percentage |
+| `--max-otm-pct` | 0.03 | Maximum out-of-the-money percentage |
+| `--delta-lo` | 0.15 | Minimum delta threshold |
+| `--delta-hi` | 0.35 | Maximum delta threshold |
+| `--min-bid` | 0.05 | Minimum bid price filter |
+| `--min-open-interest` | 1 | Minimum open interest filter |
+| `--max-spread-to-mid` | 0.75 | Maximum bid-ask spread as % of mid |
+| `--rank-metric` | premium_yield | Ranking method (premium_yield, max_profit, pop_est) |
+| `--outdir` | ./data | Output directory for CSV files |
+
+### Mark Command
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--csv` | Yes | Path to CSV file from previous screening |
+| `--underlying-close` | Yes | Closing price of underlying asset |
+
+## Output Format
+
+The screener generates CSV files with the following columns:
+
+- `ticker`: Option contract identifier
+- `expiration`: Expiration date
+- `strike`: Strike price
+- `delta`: Option delta
+- `bid`/`ask`/`mid`: Bid, ask, and midpoint prices
+- `open_interest`: Number of open contracts
+- `iv`: Implied volatility
+- `spot`: Current underlying price
+- `premium_yield`: Premium as percentage of spot price
+- `breakeven`: Breakeven price for the strategy
+- `max_profit`: Maximum profit potential
+- `pop_est`: Estimated probability of profit
+
+## Environment Variables
+
+- `POLYGON_API_KEY` (required): Your Polygon.io API key
+
+## Troubleshooting
+
+### Common Issues
+
+- **"POLYGON_API_KEY not set in environment"**
+  - Ensure `POLYGON_API_KEY` is present in `.env` file or exported in your shell
+  - Verify the API key is valid and active
+
+- **"No contracts returned"**
+  - Market may be closed or it's a holiday
+  - Try adjusting filter parameters (e.g., increase `--max-otm-pct`)
+  - Verify the symbol is correct and has options available
+
+- **"Could not resolve underlying spot"**
+  - Check if the market is open
+  - Verify the symbol exists and is actively traded
+
+### Performance Tips
+
+- Use `--min-open-interest` to filter out illiquid options
+- Adjust `--max-spread-to-mid` to focus on liquid contracts
+- Consider `--min-bid` to avoid penny options
+
+## Example Workflow
+
+1. **Morning Setup** (before market open):
+   ```bash
+   uv run screener.py screen --symbol SPY --rank-metric premium_yield
+   ```
+
+2. **Review Results**: Open the generated CSV file to analyze opportunities
+
+3. **After Market Close**: Mark P&L for tracking:
+   ```bash
+   uv run screener.py mark --csv ./data/spy_2025-09-08_0dte_calls.csv --underlying-close 650.25
+   ```
+
+## License
+
+This project is licensed under the [MIT License](../../../LICENSE).
