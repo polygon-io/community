@@ -36,8 +36,8 @@ This tool provides a comprehensive screening system for 0-DTE covered call strat
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
-   cd 0dte_closed
+   git clone https://github.com/polygon-io/community.git
+   cd examples/rest/options-0-dte-covered-call
    ```
 
 2. **Install dependencies using uv**:
