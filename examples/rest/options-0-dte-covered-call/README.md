@@ -60,8 +60,9 @@ This tool provides a comprehensive screening system for 0-DTE covered call strat
 4. **Get a Polygon.io API key**:
    - Visit [polygon.io](https://polygon.io/)
    - Sign up for an account
-   - Upgrade to Options Developer or above
+   - Upgrade to Options Advanced
    - Copy your API key to the `.env` file
+   - You might need to fill out the legal agreements section in the dashboard in order for Greeks to work
 
 ## Usage
 
