@@ -34,9 +34,9 @@ This tool provides a comprehensive screening system for 0-DTE covered call strat
 - Python 3.10+
 - `uv` package manager
   - Install: `pipx install uv` or `pip install uv`
-- Polygon.io API key (Must be on Options Developer or above)
+- Polygon.io API key (**Must be on Options Advanced license type**)
 
-**Warning:** If you have not completed the legal agreements section in your Polygon account dashboard, the greeks portion of this demo will not work. 
+**Warning:** If you have not completed the legal agreements section in your Polygon account dashboard, the greeks portion of this demo might not work. 
 
 ## Setup
 
