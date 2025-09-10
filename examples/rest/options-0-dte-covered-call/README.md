@@ -36,8 +36,6 @@ This tool provides a comprehensive screening system for 0-DTE covered call strat
   - Install: `pipx install uv` or `pip install uv`
 - Polygon.io API key (**Must be on Options Advanced license type**)
 
-**Warning:** If you have not completed the legal agreements section in your Polygon account dashboard, the greeks portion of this demo might not work. 
-
 ## Setup
 
 1. **Clone the repository**:
@@ -62,7 +60,6 @@ This tool provides a comprehensive screening system for 0-DTE covered call strat
    - Sign up for an account
    - Upgrade to Options Advanced
    - Copy your API key to the `.env` file
-   - You might need to fill out the legal agreements section in the dashboard in order for Greeks to work
 
 ## Usage
 
