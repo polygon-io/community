@@ -162,13 +162,16 @@ def mark_realized_pnl(csv_path: str, underlying_close: float) -> str:
     assigned = []
     for _, r in df.iterrows():
         K = float(r["strike"])
-        S0 = float(r["spot"])
-        c = float(r["mid"])
+        S0 = float(r["spot"])  # Price when you sold the call
+        c = float(r["mid"])    # Premium collected
         if S_close <= K:
-            p = (S_close - S0) + c
+            # Not assigned: keep the premium collected
+            p = c
             assigned.append(False)
         else:
-            p = (K - S0) + c
+            # Assigned: premium + (strike - spot price when call was sold)
+            # This represents the gain from selling at strike vs market price
+            p = c + (K - S0)
             assigned.append(True)
         per_share.append(p)
     df["assigned"] = assigned
