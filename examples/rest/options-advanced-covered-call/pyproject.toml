@@ -1,0 +1,19 @@
+[project]
+name = "advanced-covered-call-screener"
+version = "0.2.0"
+description = "An intelligent Python utility that automatically finds the best covered call options with sophisticated profitability analysis and advanced metrics"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Alex Novotny" }
+]
+license = { file = "LICENSE" }
+dependencies = [
+  "python-dotenv",
+  "polygon-api-client",
+  "pandas"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta" 
