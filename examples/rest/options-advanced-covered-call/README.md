@@ -25,7 +25,7 @@ An intelligent Python utility that automatically finds the best covered call opt
 
 - Python 3.10+
 - `uv` package manager (recommended) or `pip`
-- Polygon.io API key (free tier available)
+- Polygon.io API key (**Must be on Options Advanced license type**)
 
 ## ⚙️ Setup
 
@@ -52,7 +52,8 @@ An intelligent Python utility that automatically finds the best covered call opt
 
 4. **Get a Polygon.io API key**:
    - Visit [polygon.io](https://polygon.io/)
-   - Sign up for a free account
+   - Sign up for an account
+   - Upgrade to Options Advanced
    - Copy your API key to the `.env` file
 
 ## 🎯 Usage
@@ -62,8 +63,8 @@ An intelligent Python utility that automatically finds the best covered call opt
 Automatically find the best covered call options with multiple ranking criteria:
 
 ```bash
-# Find best SPY options (saves 1 CSV with profitable ranking by default)
-uv run screener.py find --symbol SPY
+# Find best SPY(default) options (saves 1 CSV with profitable ranking by default)
+uv run screener.py find
 
 # Use different ranking criteria
 uv run screener.py find --symbol SPY --criteria premium
